@@ -129,34 +129,37 @@ public class Main {
     // При каком n в какую сторону сдвиг можете выбирать сами.
     public static void swapArray(int[] arr, int n) {
 
-        int startIndex   = 0;      // Стартовый индекс. Нужен для отслеживания закольцевания
-        int currentIndex = 0;      // Индекс элемента, который сейчас в буфере
-        int currentValue = arr[0]; // Буфер для значения
+        if (Math.abs(n) != arr.length) {
 
-        // Пройдем по массиву 1 раз и сразу будем перемещать элементы в нужные места
-        for (int i : arr) {
+            int startIndex   = 0;      // Стартовый индекс. Нужен для отслеживания закольцевания
+            int currentIndex = 0;      // Индекс элемента, который сейчас в буфере
+            int currentValue = arr[0]; // Буфер для значения
 
-            int newIndex, temp;
+            // Пройдем по массиву 1 раз и сразу будем перемещать элементы в нужные места
+            for (int i : arr) {
 
-            // Вычисляем индекс, куда перемещать текущий элемент
-            newIndex = (currentIndex + n) % arr.length;
-            newIndex = newIndex < 0 ? arr.length + newIndex : newIndex;
+                int newIndex, temp;
 
-            // Если вдруг вернулись в ту же точку до окончания основного цикла,
-            // то возьмем следующий индекс от стартового, иначе так и будт ходить по кругу.
-            // В противном случае просто перемещаем элемент из буфера в новое место массива,
-            // а в буфер помещаем новый элемент.
-            if (newIndex == startIndex) {
-                arr[newIndex] = currentValue;
-                currentIndex  = ++startIndex;
-                currentValue  = arr[currentIndex];
-            } else {
-                temp          = arr[newIndex];
-                arr[newIndex] = currentValue;
-                currentValue  = temp;
-                currentIndex  = newIndex;
+                // Вычисляем индекс, куда перемещать текущий элемент
+                newIndex = (currentIndex + n) % arr.length;
+                newIndex = newIndex < 0 ? arr.length + newIndex : newIndex;
+
+                // Если вдруг вернулись в ту же точку до окончания основного цикла,
+                // то возьмем следующий индекс от стартового, иначе так и будт ходить по кругу.
+                // В противном случае просто перемещаем элемент из буфера в новое место массива,
+                // а в буфер помещаем новый элемент.
+                if (newIndex == startIndex) {
+                    arr[newIndex] = currentValue;
+                    currentIndex  = ++startIndex;
+                    currentValue  = arr[currentIndex];
+                } else {
+                    temp = arr[newIndex];
+                    arr[newIndex] = currentValue;
+                    currentValue  = temp;
+                    currentIndex  = newIndex;
+                }
+
             }
-
         }
 
         System.out.println(Arrays.toString(arr));
@@ -170,7 +173,7 @@ public class Main {
         fillMatrix();
         minMax();
         System.out.println(checkBalance(new int[]{5, 2, 1, 1, 1}));
-        swapArray(new int[]{1, 2, 3, 4}, -2);
+        swapArray(new int[]{1, 2, 3, 4}, 4);
     }
 
 }
