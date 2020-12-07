@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<SplitPane dividerPositions="0.3" prefHeight="447.0" prefWidth="487.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="homework04.Controller">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="462.0" prefWidth="116.0"
+                SplitPane.resizableWithParent="false">
+        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="143.0" text="Участники"
+               textAlignment="CENTER"/>
+        <TextArea fx:id="members" editable="false" layoutY="17.0" prefHeight="445.0" prefWidth="143.0"
+                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                  AnchorPane.topAnchor="17.0"/>
+    </AnchorPane>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="458.0" prefWidth="376.0"
+                SplitPane.resizableWithParent="false">
+        <VBox prefHeight="445.0" prefWidth="336.0">
+            <TextArea fx:id="mainArea" editable="false" prefHeight="549.0" prefWidth="336.0"
+                      VBox.vgrow="ALWAYS"/>
+            <HBox>
+                <TextField fx:id="msgField" onAction="#sendMessage" promptText="Введите сообщение"
+                           HBox.hgrow="ALWAYS">
+                    <HBox.margin>
+                        <Insets bottom="1.0" left="1.0" right="1.0" top="1.0"/>
+                    </HBox.margin>
+                </TextField>
+                <Button onAction="#sendMessage" text="Отправить">
+                    <HBox.margin>
+                        <Insets bottom="1.0" left="1.0" right="1.0" top="1.0"/>
+                    </HBox.margin>
+                </Button>
+            </HBox>
+        </VBox>
+    </AnchorPane>
+</SplitPane>
