@@ -12,6 +12,7 @@ public class ClientHandler {
     private static final String END_CMD = "/end";
     private static final String AUTH_CMD = "/auth"; // "/auth login password"
     private static final String AUTH_OK_CMD = "/authok";
+    private static final String PRIVATE_MSG_CMD = "/w";
 
     private final MyServer myServer;
     private final Socket clientSocket;
@@ -80,8 +81,13 @@ public class ClientHandler {
             System.out.println("message: " + message);
             if (message.startsWith(END_CMD)) {
                 return;
-            }
-            else {
+            } else if (message.startsWith(PRIVATE_MSG_CMD)) {
+                String[] parts = message.split(" ");
+                ClientHandler recipient = myServer.getClientHandlerByNick(parts[1]);
+                if (recipient != null) {
+                    myServer.sendPrivateMessage(nickname + ": " + message.substring(4 + parts[1].length()), recipient);
+                }
+            } else {
                 myServer.broadcastMessage(nickname + ": " + message, this);
             }
         }
