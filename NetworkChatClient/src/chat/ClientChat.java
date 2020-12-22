@@ -28,6 +28,7 @@ public class ClientChat extends Application {
         USERS_TEST_DATA.add("Oleg");
         USERS_TEST_DATA.add("Alexey");
         USERS_TEST_DATA.add("Peter");
+        USERS_TEST_DATA.add("all");
     }
 
     private ClientChatState state = ClientChatState.AUTHENTICATION;

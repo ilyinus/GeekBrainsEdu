@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class MyServer {
 
@@ -77,6 +78,10 @@ public class MyServer {
         }
     }
 
+    public synchronized void sendPrivateMessage(String message, ClientHandler recipient) throws IOException {
+        recipient.sendMessage(message);
+    }
+
     public synchronized void subscribe(ClientHandler handler) {
         clients.add(handler);
     }
@@ -97,4 +102,14 @@ public class MyServer {
         }
         return false;
     }
+
+    public ClientHandler getClientHandlerByNick(String nickname) {
+        List<ClientHandler> result = clients.stream().filter((e) -> e.getNickname().equals(nickname)).collect(Collectors.toList());
+        if (result.size() > 0) {
+            return result.get(0);
+        } else {
+            return null;
+        }
+    }
+
 }

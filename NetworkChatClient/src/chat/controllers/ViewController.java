@@ -13,6 +13,8 @@ import chat.models.Network;
 import java.io.IOException;
 
 public class ViewController {
+    private static final String PRIVATE_CMD = "/w ";
+    private static final String EMPTY_CMD = "";
 
     @FXML
     public ListView<String> usersList;
@@ -35,11 +37,23 @@ public class ViewController {
     @FXML
     private void sendMessage() {
         String message = textField.getText();
-        appendMessage("Я: " + message);
+        String recipient = usersList.getSelectionModel().getSelectedItem();
+        String prefix = "";
+        String cmd;
+
+        if (recipient == null ||  recipient.equals("all")) {
+            prefix = "Я -> Всем: ";
+            cmd = EMPTY_CMD;
+        } else {
+            prefix = "Я -> " + recipient + ": ";
+            cmd = PRIVATE_CMD + recipient + " ";
+        }
+
+        appendMessage(prefix + message);
         textField.clear();
 
         try {
-            network.sendMessage(message);
+            network.sendMessage(cmd + message);
         } catch (IOException e) {
             e.printStackTrace();
             String errorMessage = "Failed to send message";
