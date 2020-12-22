@@ -1,6 +1,7 @@
 package chat;
 
 
+import chat.clientserver.Command;
 import chat.auth.AuthService;
 import chat.auth.BaseAuthService;
 import chat.handler.ClientHandler;
@@ -11,7 +12,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class MyServer {
 
@@ -69,25 +69,43 @@ public class MyServer {
     }
 
     public synchronized void broadcastMessage(String message, ClientHandler sender) throws IOException {
+
         for (ClientHandler client : clients) {
             if (client == sender) {
                 continue;
             }
+            if (sender == null) {
+                client.sendMessage(message);
+            } else {
+                client.sendMessage(sender.getNickname(), message);
+            }
 
-            client.sendMessage(message);
         }
     }
 
-    public synchronized void sendPrivateMessage(String message, ClientHandler recipient) throws IOException {
-        recipient.sendMessage(message);
-    }
-
-    public synchronized void subscribe(ClientHandler handler) {
+    public synchronized void subscribe(ClientHandler handler) throws IOException {
         clients.add(handler);
+        notifyClientsUsersListUpdated(clients);
     }
 
-    public synchronized void unsubscribe(ClientHandler handler) {
+    public synchronized void unsubscribe(ClientHandler handler) throws IOException {
         clients.remove(handler);
+        notifyClientsUsersListUpdated(clients);
+    }
+
+    private void notifyClientsUsersListUpdated(List<ClientHandler> clients) throws IOException {
+        List<String> usernames = new ArrayList<>();
+        for (ClientHandler client : clients) {
+            usernames.add(client.getNickname());
+        }
+
+        for (ClientHandler client : clients) {
+//            List<String> usernames = clients.stream()
+//                    .map(ClientHandler::getNickname)
+//                    .collect(Collectors.toList());
+
+            client.sendCommand(Command.updateUsersListCommand(usernames));
+        }
     }
 
     public AuthService getAuthService() {
@@ -103,13 +121,11 @@ public class MyServer {
         return false;
     }
 
-    public ClientHandler getClientHandlerByNick(String nickname) {
-        List<ClientHandler> result = clients.stream().filter((e) -> e.getNickname().equals(nickname)).collect(Collectors.toList());
-        if (result.size() > 0) {
-            return result.get(0);
-        } else {
-            return null;
+    public synchronized void sendPrivateMessage(ClientHandler sender, String recipient, String privateMessage) throws IOException {
+        for (ClientHandler client : clients) {
+            if (client.getNickname().equals(recipient)) {
+                client.sendMessage(sender.getNickname(), privateMessage);
+            }
         }
     }
-
 }

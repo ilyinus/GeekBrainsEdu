@@ -11,8 +11,8 @@ public class BaseAuthService implements AuthService {
 
     static {
         USERS.put(new User("login1", "pass1", "Peter"), "Peter");
-        USERS.put(new User("login2", "pass3", "Alexey"), "Alexey");
-        USERS.put(new User("login3", "pass4", "Oleg"), "Oleg");
+        USERS.put(new User("login2", "pass2", "Oleg"), "Oleg");
+        USERS.put(new User("login3", "pass3", "Alexey"), "Alexey");
     }
 
     @Override

@@ -26,14 +26,13 @@ public class AuthController {
     public void executeAuth(ActionEvent actionEvent) {
         String login = loginField.getText();
         String password = passwordField.getText();
-        if (login == null || login.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+        if (login == null || login.isEmpty() || password == null || password.isEmpty()) {
             ClientChat.showNetworkError("Логин и пароль обязательны!", "Валидация", null);
             return;
         }
 
-        String authCommandMessage = String.format("%s %s %s", AUTH_CMD, login, password);
         try {
-            network.sendMessage(authCommandMessage);
+            network.sendAuthMessage(login, password);
         } catch (IOException e) {
             ClientChat.showNetworkError(e.getMessage(), "Auth error!", null);
             e.printStackTrace();

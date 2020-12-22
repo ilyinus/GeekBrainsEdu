@@ -1,6 +1,7 @@
 package chat;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
@@ -28,7 +29,6 @@ public class ClientChat extends Application {
         USERS_TEST_DATA.add("Oleg");
         USERS_TEST_DATA.add("Alexey");
         USERS_TEST_DATA.add("Peter");
-        USERS_TEST_DATA.add("all");
     }
 
     private ClientChatState state = ClientChatState.AUTHENTICATION;
@@ -36,6 +36,10 @@ public class ClientChat extends Application {
     private Stage authDialogStage;
     private Network network;
     private ViewController viewController;
+
+    public void updateUsers(List<String> users) {
+        viewController.usersList.setItems(FXCollections.observableList(users));
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -125,10 +129,6 @@ public class ClientChat extends Application {
 
     public ClientChatState getState() {
         return state;
-    }
-
-    public void setState(ClientChatState state) {
-        this.state = state;
     }
 
     public void activeChatDialog(String nickname) {
