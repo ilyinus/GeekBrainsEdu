@@ -1,11 +1,13 @@
 package chat.controllers;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import chat.ClientChat;
 import chat.models.Network;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -21,6 +23,26 @@ public class AuthController {
 
 
     private Network network;
+    private Stage authDialogStage;
+
+    public void checkNetwork() {
+        Thread thread = new Thread(() -> {
+            while (true) {
+                try {
+                    if (network.isTimeout()) {
+                        Platform.runLater(() -> authDialogStage.close());
+                        return;
+                    }
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.setDaemon(true);
+        thread.start();
+    }
 
     @FXML
     public void executeAuth(ActionEvent actionEvent) {
@@ -41,5 +63,9 @@ public class AuthController {
 
     public void setNetwork(Network network) {
         this.network = network;
+    }
+
+    public void setAuthDialogStage(Stage authDialogStage) {
+        this.authDialogStage = authDialogStage;
     }
 }

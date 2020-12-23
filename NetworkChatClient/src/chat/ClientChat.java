@@ -90,6 +90,8 @@ public class ClientChat extends Application {
 
         AuthController authController = loader.getController();
         authController.setNetwork(network);
+        authController.setAuthDialogStage(authDialogStage);
+        authController.checkNetwork();
 
         authDialogStage.setScene(new Scene(parent));
         setStageForSecondScreen(authDialogStage);
