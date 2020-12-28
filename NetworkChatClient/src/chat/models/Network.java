@@ -23,6 +23,7 @@ public class Network {
     private Socket socket;
     private ClientChat clientChat;
     private String nickname;
+    private boolean timeout;
 
     public Network() {
         this(SERVER_ADDRESS, SERVER_PORT);
@@ -140,6 +141,9 @@ public class Network {
                     ClientChat.showNetworkError(data.getErrorMessage(), "Auth error", null);
                 });
                 break;
+            case AUTH_TIMEOUT:
+                timeout = true;
+                throw new RuntimeException("Таймаут аутентификации");
             default:
                 throw new IllegalArgumentException("Uknown command type: " + command.getType());
         }
@@ -169,5 +173,9 @@ public class Network {
 
     public void sendAuthMessage(String login, String password) throws IOException {
         sendCommand(authCommand(login, password));
+    }
+
+    public boolean isTimeout() {
+        return timeout;
     }
 }

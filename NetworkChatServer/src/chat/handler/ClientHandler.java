@@ -9,7 +9,6 @@ import chat.MyServer;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -52,6 +51,23 @@ public class ClientHandler {
     }
 
     private void authentication() throws IOException {
+
+        Timer timer = new Timer(true);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (nickname == null) {
+                    try {
+                        System.out.println("Таймаут аутентификации");
+                        sendCommand(Command.authTimeoutCommand());
+                        closeConnection();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        },120000);
+
         while (true) {
             Command command = readCommand();
             if (command == null) {
