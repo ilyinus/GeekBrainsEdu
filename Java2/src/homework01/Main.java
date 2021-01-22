@@ -20,12 +20,7 @@ public class Main {
 
         for (Action unit : units) {
             for (Obstacle obstacle : obstacles) {
-                boolean result = false;
-                if (obstacle.getType() == ObstacleType.JUMPING)
-                    result = unit.jump(obstacle);
-                else if (obstacle.getType() == ObstacleType.RUNNING)
-                    result = unit.run(obstacle);
-                if (!result)
+                if (!obstacle.pass(unit))
                     break;
             }
         }

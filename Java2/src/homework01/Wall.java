@@ -3,7 +3,6 @@ package homework01;
 public class Wall extends Obstacle {
 
     public Wall(int height) {
-        super(ObstacleType.JUMPING);
         this.height = height;
         System.out.println("Создано препядствие " + this + ". Высота: " + height);
     }
@@ -11,5 +10,10 @@ public class Wall extends Obstacle {
     @Override
     public String toString() {
         return "Wall";
+    }
+
+    @Override
+    public boolean pass(Action unit) {
+        return unit.jump(height);
     }
 }
